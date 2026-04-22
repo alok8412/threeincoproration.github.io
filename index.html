@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nexlify — Build What's Next</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f9f8f5;
+      --ink: #0f0e0c;
+      --ink-muted: #6b6860;
+      --accent: #2a5fff;
+      --accent-light: #e8eeff;
+      --white: #ffffff;
+      --border: #e4e2dc;
+      --card-bg: #ffffff;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 6vw;
+      background: rgba(249,248,245,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown .6s ease both;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.35rem;
+      letter-spacing: -0.5px; color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: .9rem; font-weight: 500;
+      color: var(--ink-muted); transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--ink); color: var(--white);
+      padding: 10px 22px; border-radius: 50px;
+      font-size: .88rem; font-weight: 500;
+      text-decoration: none; transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: var(--accent); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 140px 6vw 80px;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-light); color: var(--accent);
+      border: 1px solid #c5d4ff;
+      padding: 7px 18px; border-radius: 50px;
+      font-size: .8rem; font-weight: 500; letter-spacing: .3px;
+      margin-bottom: 30px;
+      animation: fadeUp .7s .1s ease both;
+    }
+    .hero-badge .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s infinite;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -2px; max-width: 840px;
+      animation: fadeUp .7s .2s ease both;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      margin-top: 24px; max-width: 520px;
+      font-size: 1.1rem; line-height: 1.7;
+      color: var(--ink-muted); font-weight: 300;
+      animation: fadeUp .7s .3s ease both;
+    }
+    .hero-actions {
+      margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp .7s .4s ease both;
+    }
+    .btn-primary {
+      background: var(--accent); color: var(--white);
+      padding: 15px 36px; border-radius: 50px;
+      font-size: .95rem; font-weight: 500;
+      text-decoration: none; transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(42,95,255,.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(42,95,255,.4); }
+    .btn-ghost {
+      background: transparent; color: var(--ink);
+      padding: 15px 32px; border-radius: 50px;
+      font-size: .95rem; font-weight: 500;
+      text-decoration: none; border: 1.5px solid var(--border);
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--white); }
+
+    .hero-visual {
+      margin-top: 64px; width: 100%; max-width: 860px;
+      border-radius: 20px; overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 80px rgba(0,0,0,.1);
+      animation: fadeUp .8s .5s ease both;
+      background: var(--white);
+    }
+    .browser-bar {
+      background: #f1f0ed; padding: 12px 18px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .browser-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .browser-dot:nth-child(1) { background: #ff5f57; }
+    .browser-dot:nth-child(2) { background: #ffbd2e; }
+    .browser-dot:nth-child(3) { background: #28c840; }
+    .browser-url {
+      flex: 1; background: var(--white); border-radius: 6px;
+      padding: 5px 14px; font-size: .78rem; color: var(--ink-muted);
+      margin-left: 10px; border: 1px solid var(--border);
+    }
+    .dashboard-preview {
+      padding: 28px 28px 20px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    }
+    .dash-card {
+      background: var(--bg); border-radius: 12px; padding: 18px;
+      border: 1px solid var(--border);
+    }
+    .dash-card .label { font-size: .72rem; color: var(--ink-muted); font-weight: 500; letter-spacing: .5px; text-transform: uppercase; }
+    .dash-card .value { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; margin-top: 6px; }
+    .dash-card .change { font-size: .78rem; color: #22c55e; margin-top: 4px; font-weight: 500; }
+    .dash-bar { margin-top: 18px; display: flex; gap: 5px; align-items: flex-end; height: 60px; }
+    .dash-bar-item {
+      flex: 1; border-radius: 4px 4px 0 0;
+      background: var(--accent-light);
+      transition: background .2s;
+    }
+    .dash-bar-item.active { background: var(--accent); }
+    .dash-bar-item:hover { background: var(--accent); }
+
+    /* ── LOGOS ── */
+    .logos-section {
+      padding: 48px 6vw;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .logos-section p { font-size: .82rem; color: var(--ink-muted); letter-spacing: .8px; text-transform: uppercase; font-weight: 500; margin-bottom: 28px; }
+    .logos-row { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; align-items: center; }
+    .logo-pill {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 1rem; color: var(--border);
+      letter-spacing: -0.3px; filter: grayscale(1); opacity: .5;
+      transition: opacity .2s;
+    }
+    .logo-pill:hover { opacity: .9; }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 100px 6vw;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: .78rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -1px; line-height: 1.15;
+      max-width: 480px;
+    }
+    .section-title em { font-style: normal; color: var(--accent); }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; margin-top: 56px;
+    }
+    .feature-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .feature-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.08); transform: translateY(-3px); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--accent-light); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 20px;
+    }
+    .feature-card h3 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 1.05rem; margin-bottom: 10px;
+    }
+    .feature-card p { font-size: .9rem; color: var(--ink-muted); line-height: 1.65; font-weight: 300; }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      background: var(--ink); color: var(--white);
+      padding: 100px 6vw;
+    }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .how-section .section-label { color: #7da0ff; }
+    .how-section .section-title { color: var(--white); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-top: 60px; }
+    .step { position: relative; }
+    .step-num {
+      font-family: 'Syne', sans-serif; font-size: 3.5rem;
+      font-weight: 800; color: rgba(255,255,255,.08);
+      line-height: 1; margin-bottom: 12px;
+    }
+    .step h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+    .step p { font-size: .88rem; color: rgba(255,255,255,.55); line-height: 1.65; font-weight: 300; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 100px 6vw;
+      max-width: 1200px; margin: 0 auto;
+      text-align: center;
+    }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 56px; text-align: left; }
+    .testi-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 30px;
+    }
+    .stars { color: #f59e0b; font-size: .9rem; margin-bottom: 14px; }
+    .testi-card blockquote { font-size: .92rem; line-height: 1.7; color: var(--ink); font-weight: 300; margin-bottom: 20px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--accent-light); display: flex;
+      align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: .85rem; color: var(--accent);
+    }
+    .author-info .name { font-weight: 600; font-size: .88rem; }
+    .author-info .role { font-size: .78rem; color: var(--ink-muted); }
+
+    /* ── PRICING ── */
+    .pricing {
+      background: var(--bg);
+      padding: 100px 6vw;
+      text-align: center;
+    }
+    .pricing-inner { max-width: 1100px; margin: 0 auto; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 56px; }
+    .price-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 36px 30px;
+      text-align: left; position: relative;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .price-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.08); transform: translateY(-3px); }
+    .price-card.featured {
+      background: var(--accent); color: var(--white);
+      border-color: var(--accent);
+    }
+    .price-card.featured .plan-name,
+    .price-card.featured .price-amount,
+    .price-card.featured .feature-list li { color: var(--white); }
+    .price-card.featured .price-period,
+    .price-card.featured .plan-desc { color: rgba(255,255,255,.7); }
+    .featured-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--ink); color: var(--white);
+      font-size: .7rem; font-weight: 600; padding: 4px 14px;
+      border-radius: 50px; letter-spacing: .5px; white-space: nowrap;
+    }
+    .plan-name { font-size: .78rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 14px; }
+    .price-amount { font-family: 'Syne', sans-serif; font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; }
+    .price-period { font-size: .85rem; color: var(--ink-muted); }
+    .plan-desc { font-size: .88rem; color: var(--ink-muted); margin: 12px 0 24px; line-height: 1.5; font-weight: 300; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .feature-list li { font-size: .88rem; display: flex; align-items: center; gap: 10px; color: var(--ink); }
+    .feature-list li::before { content: "✓"; font-weight: 700; color: var(--accent); font-size: .85rem; flex-shrink: 0; }
+    .price-card.featured .feature-list li::before { color: rgba(255,255,255,.9); }
+    .btn-plan {
+      display: block; text-align: center; text-decoration: none;
+      padding: 13px; border-radius: 50px; font-size: .9rem; font-weight: 500;
+      transition: all .2s;
+    }
+    .btn-plan-dark { background: var(--ink); color: var(--white); }
+    .btn-plan-dark:hover { background: var(--accent); }
+    .btn-plan-white { background: var(--white); color: var(--accent); }
+    .btn-plan-white:hover { background: var(--accent-light); }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 100px 6vw;
+      text-align: center;
+      max-width: 700px; margin: 0 auto;
+    }
+    .cta-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px;
+    }
+    .cta-section p { color: var(--ink-muted); font-size: 1rem; line-height: 1.7; font-weight: 300; margin-bottom: 36px; }
+    .cta-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .cta-input {
+      padding: 14px 22px; border-radius: 50px;
+      border: 1.5px solid var(--border); background: var(--white);
+      font-size: .95rem; font-family: 'DM Sans', sans-serif;
+      min-width: 260px; outline: none; transition: border-color .2s;
+      color: var(--ink);
+    }
+    .cta-input:focus { border-color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 6vw;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--ink); }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 28px; }
+    .footer-links a { text-decoration: none; font-size: .85rem; color: var(--ink-muted); transition: color .2s; }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy { font-size: .8rem; color: var(--ink-muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .dashboard-preview { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="#">Nex<span>lify</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+    <a class="nav-cta" href="#cta">Get started free</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge"><span class="dot"></span> Now in public beta</div>
+    <h1>Build products<br/><em>faster</em> than ever before</h1>
+    <p>Nexlify gives your team the tools, insights, and automation to ship 10× faster — without the chaos.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">Start for free →</a>
+      <a href="#how" class="btn-ghost">See how it works</a>
+    </div>
+    <div class="hero-visual">
+      <div class="browser-bar">
+        <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+        <div class="browser-url">app.nexlify.io/dashboard</div>
+      </div>
+      <div class="dashboard-preview">
+        <div class="dash-card">
+          <div class="label">Revenue</div>
+          <div class="value">$84.2k</div>
+          <div class="change">↑ 18.4% this month</div>
+        </div>
+        <div class="dash-card">
+          <div class="label">Active Users</div>
+          <div class="value">12,480</div>
+          <div class="change">↑ 7.1% this week</div>
+        </div>
+        <div class="dash-card">
+          <div class="label">Conversion</div>
+          <div class="value">4.7%</div>
+          <div class="change">↑ 0.9% vs last week</div>
+        </div>
+        <div class="dash-card" style="grid-column: span 3">
+          <div class="label">Weekly Engagement</div>
+          <div class="dash-bar">
+            <div class="dash-bar-item" style="height:40%"></div>
+            <div class="dash-bar-item" style="height:55%"></div>
+            <div class="dash-bar-item" style="height:70%"></div>
+            <div class="dash-bar-item" style="height:50%"></div>
+            <div class="dash-bar-item active" style="height:90%"></div>
+            <div class="dash-bar-item" style="height:75%"></div>
+            <div class="dash-bar-item" style="height:85%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS -->
+  <div class="logos-section reveal">
+    <p>Trusted by teams at</p>
+    <div class="logos-row">
+      <div class="logo-pill">Stripe</div>
+      <div class="logo-pill">Notion</div>
+      <div class="logo-pill">Linear</div>
+      <div class="logo-pill">Vercel</div>
+      <div class="logo-pill">Figma</div>
+      <div class="logo-pill">Loom</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-label reveal">Features</div>
+    <div class="section-title reveal">Everything your team <em>needs</em></div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">⚡</div>
+        <h3>Blazing Fast Deployment</h3>
+        <p>Push code and ship to production in seconds. Automated pipelines handle the rest, so you stay in flow.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📊</div>
+        <h3>Real-time Analytics</h3>
+        <p>Understand what's happening as it happens. Rich dashboards, custom metrics, and instant alerts.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔗</div>
+        <h3>Seamless Integrations</h3>
+        <p>Connect your favorite tools — Slack, GitHub, Jira, Salesforce and 200+ more with one click.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🤝</div>
+        <h3>Team Collaboration</h3>
+        <p>Real-time editing, comments, reviews, and role-based access — built for how modern teams work.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🛡️</div>
+        <h3>Enterprise Security</h3>
+        <p>SOC2 Type II, GDPR compliant, SSO, and end-to-end encryption keep your data safe at every step.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🤖</div>
+        <h3>AI-powered Insights</h3>
+        <p>Let AI surface anomalies, predict churn, and recommend actions — so you make smarter decisions faster.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how">
+    <div class="how-inner">
+      <div class="section-label reveal">How it works</div>
+      <div class="section-title reveal">Up and running<br/>in minutes</div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Connect your stack</h3>
+          <p>Link your repos, tools, and data sources in one place. No complex config required.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <h3>Invite your team</h3>
+          <p>Add teammates, assign roles, and set up workspaces tailored to your workflow.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <h3>Build & ship</h3>
+          <p>Use our visual builder, automate pipelines, and deploy with a single click.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">04</div>
+          <h3>Grow with insights</h3>
+          <p>Track impact, iterate fast, and scale confidently backed by real-time data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-label reveal">Testimonials</div>
+    <div class="section-title reveal" style="max-width:100%;text-align:center;margin:0 auto;">Loved by builders <em>worldwide</em></div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Nexlify cut our deployment time in half. It's become the backbone of our entire product org."</blockquote>
+        <div class="testi-author">
+          <div class="avatar">SR</div>
+          <div class="author-info"><div class="name">Sarah R.</div><div class="role">Head of Engineering · Vercel</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"The analytics alone are worth it. We spotted a churn pattern on day one and saved a major account."</blockquote>
+        <div class="testi-author">
+          <div class="avatar">TK</div>
+          <div class="author-info"><div class="name">Tom K.</div><div class="role">CPO · Notion</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Onboarding our 40-person team took one afternoon. The collaboration features are genuinely best-in-class."</blockquote>
+        <div class="testi-author">
+          <div class="avatar">AM</div>
+          <div class="author-info"><div class="name">Anika M.</div><div class="role">CTO · Linear</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-inner">
+      <div class="section-label reveal">Pricing</div>
+      <div class="section-title reveal" style="max-width:100%;text-align:center;margin:0 auto;">Simple, honest <em>pricing</em></div>
+      <div class="pricing-grid">
+        <div class="price-card reveal">
+          <div class="plan-name">Starter</div>
+          <div class="price-amount">$0 <span class="price-period">/ mo</span></div>
+          <div class="plan-desc">Perfect for solo builders and side projects.</div>
+          <ul class="feature-list">
+            <li>Up to 3 projects</li>
+            <li>5GB storage</li>
+            <li>Basic analytics</li>
+            <li>Community support</li>
+          </ul>
+          <a href="#" class="btn-plan btn-plan-dark">Get started free</a>
+        </div>
+        <div class="price-card featured reveal">
+          <div class="featured-badge">Most popular</div>
+          <div class="plan-name">Pro</div>
+          <div class="price-amount">$29 <span class="price-period">/ mo</span></div>
+          <div class="plan-desc">For growing teams shipping fast.</div>
+          <ul class="feature-list">
+            <li>Unlimited projects</li>
+            <li>50GB storage</li>
+            <li>Advanced analytics</li>
+            <li>Priority support</li>
+            <li>AI insights</li>
+          </ul>
+          <a href="#" class="btn-plan btn-plan-white">Start free trial</a>
+        </div>
+        <div class="price-card reveal">
+          <div class="plan-name">Enterprise</div>
+          <div class="price-amount">Custom</div>
+          <div class="plan-desc">For large orgs with advanced needs.</div>
+          <ul class="feature-list">
+            <li>Everything in Pro</li>
+            <li>Unlimited storage</li>
+            <li>SSO & SAML</li>
+            <li>Dedicated CSM</li>
+            <li>SLA guarantee</li>
+          </ul>
+          <a href="#" class="btn-plan btn-plan-dark">Contact sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <h2 class="reveal">Ready to build something great?</h2>
+    <p class="reveal">Join over 12,000 teams already using Nexlify. Start free — no credit card needed.</p>
+    <div class="cta-form reveal">
+      <input class="cta-input" type="email" placeholder="Enter your work email"/>
+      <a href="#" class="btn-primary">Get started free</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Nex<span>lify</span></div>
+    <div class="footer-links">
+      <a href="#">Product</a>
+      <a href="#">Pricing</a>
+      <a href="#">Blog</a>
+      <a href="#">Careers</a>
+      <a href="#">Privacy</a>
+    </div>
+    <div class="footer-copy">© 2026 Nexlify, Inc.</div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
