@@ -317,7 +317,7 @@
     <h2 class="contact-title">Start a<br><span>project</span><br>with us.</h2>
     <div class="contact-info">
       <p><a href="mailto:aloknidan@gmail.com">aloknidan@gmail.com</a><br>+91 85128-84887</p><br>
-      <p>350 Brannan Street<br>San Francisco, CA 94107</p><br>
+      <p>350 Brannan Street<br>Ballabhgarh, Faridabad, Haryana-121004</p><br>
       <p><a href="#">github.com/threeinc</a></p>
     </div>
   </div>
@@ -425,7 +425,7 @@
   const EMAILJS_SERVICE_ID  = 'service_avxf0jd';
   const EMAILJS_TEMPLATE_ID = 'template_u0dbelr';
 
-  emailjs.init(EMAILJS_PUBLIC_KEY);
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -448,7 +448,7 @@
       from_email : email,
       github_org : github || 'N/A',
       message    : message,
-      to_email   : 'aloknidan@gmail.com'
+
     })
     .then(() => {
       showStatus('✓ Message sent! We\'ll reply to ' + email + ' shortly.', '#0ea5e9', '#fff');
